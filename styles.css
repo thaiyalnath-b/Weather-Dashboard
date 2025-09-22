@@ -40,7 +40,11 @@ body{
         padding: 10px;
         border: none;
         border-radius: 5px;
-        background-color: rgb(96, 233, 162);
+        background-color: rgb(4, 161, 124);
+        color: white;
+    }
+    #btn:hover{
+        background-color: rgb(2, 104, 80);
     }
     #loading{
         margin-top: 20px;
