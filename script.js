@@ -12,28 +12,41 @@ searchBtn.addEventListener('click', ()=>{
     const city = cityInput.value;
     if(city){
         fetchWeather(city);
+        cityInput.value ='';
     }
+
 });
 
 async function fetchWeather(city) {
+    // Clear previous data
+    weatherInfo.style.display = 'none';
+    cityName.textContent = '';
+    temperature.textContent = '';
+    weather.textContent = '';
+    humidity.textContent = '';
+    wind.textContent = '';
+    loading.innerHTML = 'Loading...';
+    loading.style.display = 'block';
+
     const url = `https://wttr.in/${city}?format=j1`;
 
-    try{
-        loading.style.display = 'block'
+    try {
         const response = await fetch(url);
 
+        console.log("Fetching..."); 
         if(!response.ok){
             throw new Error('city not found');
         }
         const data = await response.json();
+        console.log("Displaying data...")
         displayWeather(data);
         loading.style.display = 'none';
-    }
-    catch (error) {
-        loading.innerHTML = `Something went wrong,  Try again later`;
+    } catch (error) {
+        loading.innerHTML = `Something went wrong, API not live. Try again later`;
         console.log(error.message);
     }
 }
+
 
 function displayWeather(data){
      const currentCondition = data.current_condition[0];
@@ -44,3 +57,7 @@ function displayWeather(data){
      wind.textContent = `Wind Speed: ${currentCondition.windspeedKmph} Km/h`;
      weatherInfo.style.display = 'block';
 };
+function displayWeather2(data){
+    return null;
+}
+
