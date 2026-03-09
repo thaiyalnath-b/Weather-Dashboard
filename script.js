@@ -8,56 +8,62 @@ const wind = document.getElementById('wind');
 const loading = document.getElementById('loading');
 const weatherInfo = document.querySelector('.info');
 
-searchBtn.addEventListener('click', ()=>{
+searchBtn.addEventListener('click', () => {
     const city = cityInput.value;
-    if(city){
-        fetchWeather(city);
-        cityInput.value ='';
-    }
 
+    if (city) {
+        fetchWeather(city);
+        cityInput.value = '';
+    }
 });
 
 async function fetchWeather(city) {
-    // Clear previous data
+
     weatherInfo.style.display = 'none';
     cityName.textContent = '';
     temperature.textContent = '';
     weather.textContent = '';
     humidity.textContent = '';
     wind.textContent = '';
+
     loading.innerHTML = 'Loading...';
     loading.style.display = 'block';
 
-    const url = `https://wttr.in/${city}?format=j1`;
+    const url = `https://api.weatherapi.com/v1/current.json?key=e985ae2aa0ea40fda3153809260603&q=${city}`;
 
     try {
+
         const response = await fetch(url);
 
-        console.log("Fetching..."); 
-        if(!response.ok){
-            throw new Error('city not found');
+        if (!response.ok) {
+            throw new Error('City not found');
         }
+
         const data = await response.json();
-        console.log("Displaying data...")
+
         displayWeather(data);
+
         loading.style.display = 'none';
+
     } catch (error) {
-        loading.innerHTML = `Something went wrong, API not live. Try again later`;
+
+        loading.innerHTML = 'Something went wrong. Try again later';
         console.log(error.message);
+
     }
 }
 
+function displayWeather(data) {
 
-function displayWeather(data){
-     const currentCondition = data.current_condition[0];
-     cityName.textContent = data.nearest_area[0].areaName[0].value;
-     temperature.textContent = `Temperature: ${currentCondition.temp_C}°C`;
-     weather.textContent = `Weather: ${currentCondition.weatherDesc[0].value}`;
-     humidity.textContent =  `Humidity: ${currentCondition.humidity}%`;
-     wind.textContent = `Wind Speed: ${currentCondition.windspeedKmph} Km/h`;
-     weatherInfo.style.display = 'block';
-};
-function displayWeather2(data){
-    return null;
+    cityName.textContent = data.location.name;
+
+    temperature.textContent = `Temperature: ${data.current.temp_c}°C`;
+
+    weather.textContent = `Weather: ${data.current.condition.text}`;
+
+    humidity.textContent = `Humidity: ${data.current.humidity}%`;
+
+    wind.textContent = `Wind Speed: ${data.current.wind_kph} Km/h`;
+
+    weatherInfo.style.display = 'block';
 }
-

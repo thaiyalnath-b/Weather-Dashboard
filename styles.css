@@ -2,6 +2,7 @@
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 body {
@@ -9,83 +10,354 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
-    background-image: url(weather.jpg);
-    background-repeat: no-repeat;
-    background-size: cover;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 20px;
+}
 
+.entities {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 30px;
+    padding: 40px 50px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25),
+                0 0 0 1px rgba(255, 255, 255, 0.5) inset;
+    animation: fadeIn 0.5s ease;
+    width: 100%;
+    max-width: 550px;
+}
 
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+h1 {
+    margin-bottom: 35px;
+    color: #1a1a1a;
+    font-size: 2.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.05);
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+}
+
+h1::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #667eea, #764ba2);
+    border-radius: 4px;
+}
+
+#content {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+#givenData {
+    flex: 1;
+    height: 55px;
+    padding: 0 20px;
+    border-radius: 15px;
+    border: 2px solid #e0e0e0;
+    background: white;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+#givenData:focus {
+    outline: none;
+    border-color: #667eea;
+    transform: scale(1.02);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.2);
+}
+
+#givenData::placeholder {
+    color: #999;
+    font-size: 0.95rem;
+    font-style: italic;
+}
+
+#btn {
+    height: 55px;
+    padding: 0 35px;
+    border: none;
+    border-radius: 15px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+#btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.5s ease;
+}
+
+#btn:hover::before {
+    left: 100%;
+}
+
+#btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+}
+
+#btn:active {
+    transform: translateY(0);
+}
+
+#loading {
+    margin-top: 20px;
+    color: #667eea;
+    display: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px 25px;
+    background: rgba(102, 126, 234, 0.1);
+    border-radius: 40px;
+    border: 2px solid rgba(102, 126, 234, 0.2);
+    animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+        background: rgba(102, 126, 234, 0.15);
+    }
+}
+
+.info {
+    display: none;
+    margin-top: 30px;
+    width: 100%;
+    padding: 30px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 20px;
+    animation: slideUp 0.5s ease;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.8);
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.info h2 {
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2d3748;
+    border-bottom: 3px solid #667eea;
+    padding-bottom: 12px;
+    letter-spacing: -0.5px;
+}
+
+.info p {
+    padding: 12px 0;
+    font-size: 1.2rem;
+    color: #4a5568;
+    border-bottom: 1px dashed #cbd5e0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-weight: 500;
+}
+
+.info p:last-child {
+    border-bottom: none;
+}
+
+/* Enhanced weather icons */
+#weather::before {
+    content: '⛅';
+    margin-right: 8px;
+    font-size: 1.4rem;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+}
+
+#temperature::before {
+    content: '🌡️';
+    margin-right: 8px;
+    font-size: 1.4rem;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+}
+
+#humidity::before {
+    content: '💧';
+    margin-right: 8px;
+    font-size: 1.4rem;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+}
+
+#wind::before {
+    content: '💨';
+    margin-right: 8px;
+    font-size: 1.4rem;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+}
+
+#cityName::before {
+    content: '📍';
+    margin-right: 10px;
+    font-size: 1.8rem;
+    filter: drop-shadow(2px 2px 4px rgba(0,0,0,0.1));
+}
+
+/* Value highlighting */
+#weather, #temperature, #humidity, #wind {
+    position: relative;
+    padding-left: 35px;
+}
+
+#weather span, #temperature span, #humidity span, #wind span {
+    font-weight: 700;
+    color: #667eea;
+    margin-left: 8px;
+}
+
+/* Responsive design */
+@media screen and (max-width: 600px) {
     .entities {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        background-color: rgb(2, 29, 67);
-        border: none;
-        border-radius: 5px;
-        padding: 50px;
+        width: 100%;
+        padding: 30px 20px;
+        border-radius: 25px;
     }
 
     h1 {
-        margin-bottom: 20px;
-        color: white;
-        font-family: Arial, Helvetica, sans-serif;
+        font-size: 2rem;
+        text-align: center;
     }
 
-    #givenData {
-        height: 45px;
-        padding: 20px;
-        border-radius: 5px;
-        border: none;
-        margin-right: 5px;
+    h1::after {
+        width: 60px;
     }
 
-    input:focus {
-        outline: 3px solid rgb(4, 247, 182);
+    #content {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    #givenData, #btn {
+        width: 100%;
+        height: 50px;
     }
 
     #btn {
-        height: 45px;
-        padding: 10px;
-        border: none;
-        border-radius: 5px;
-        background-color: rgb(4, 161, 124);
-        color: white;
-    }
-
-    #btn:hover {
-        background-color: rgb(2, 104, 80);
-        box-shadow: rgba(252, 252, 252, 0.2) 0px 7px 29px 0px;
-    }
-
-    #loading {
-        margin-top: 20px;
-        color: white;
-        display: none;
+        padding: 0 20px;
     }
 
     .info {
-        display: none;
-        margin-top: 20px;
-        color: white;
-
-        h2 {
-            margin-bottom: 2px;
-        }
-
-        p {
-            padding: 3px;
-        }
+        padding: 20px;
     }
 
-    @media screen and (max-width: 600px) {
-        .entities {
-            width: 300px;
-            text-align: center;
-        }
-
-        #btn {
-            margin-top: 10px;
-        }
+    .info h2 {
+        font-size: 1.6rem;
     }
+
+    .info p {
+        font-size: 1rem;
+        padding: 10px 0;
+    }
+}
+
+/* Add some decorative elements */
+.entities::before {
+    content: '🌤️';
+    position: absolute;
+    top: -20px;
+    right: -20px;
+    font-size: 5rem;
+    opacity: 0.1;
+    transform: rotate(15deg);
+    pointer-events: none;
+}
+
+.entities::after {
+    content: '☔';
+    position: absolute;
+    bottom: -20px;
+    left: -20px;
+    font-size: 5rem;
+    opacity: 0.1;
+    transform: rotate(-15deg);
+    pointer-events: none;
+}
+
+/* Smooth transitions for all elements */
+* {
+    transition: all 0.3s ease;
+}
+
+/* Add hover effect on info cards */
+.info p:hover {
+    transform: translateX(5px);
+    color: #2d3748;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f0f0f0;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
 }
